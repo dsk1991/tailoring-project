@@ -72,6 +72,19 @@ class TestDocTypeSchemas(unittest.TestCase):
             self.field_map(formula_child)["output_measurement"]["options"], "Measurement Definition"
         )
 
+    def test_draft_measurement_values_can_start_blank(self):
+        body_child = self.load("body_measurement_item", "body_measurement_item.json")
+        self.assertNotEqual(self.field_map(body_child)["measured_value"].get("reqd"), 1)
+
+    def test_body_measurement_rows_are_auto_added_and_merged(self):
+        controller = (
+            DOCTYPE_ROOT / "customer_body_measurement" / "customer_body_measurement.py"
+        ).read_text(encoding="utf-8")
+        api_source = (ROOT / "tailoring_project" / "api.py").read_text(encoding="utf-8")
+        self.assertIn("def _add_missing_measurement_rows", controller)
+        self.assertIn('{"measurement_scope": "Body", "is_active": 1}', controller)
+        self.assertNotIn('doc.set("measurements", [])', api_source)
+
     def test_photo_ai_and_consent_fields_are_present(self):
         session = self.load("customer_body_measurement", "customer_body_measurement.json")
         fields = self.field_map(session)

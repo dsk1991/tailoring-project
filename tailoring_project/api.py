@@ -157,7 +157,7 @@ def analyze_measurements(session_name):
             fields=["name", "measurement_code", "measurement_name", "default_unit"],
         )
     }
-    doc.set("measurements", [])
+    existing_rows = {row.measurement_type: row for row in doc.measurements if row.measurement_type}
     accepted = []
     confidence_values = []
     for item in result.get("measurements") or []:
@@ -167,28 +167,34 @@ def analyze_measurements(session_name):
         confidence = max(0, min(100, flt(item.get("confidence"))))
         if not definition or value <= 0:
             continue
-        row = doc.append(
-            "measurements",
-            {
-                "measurement_type": definition.name,
-                "measured_value": value,
-                "unit": doc.default_unit,
-                "source": "AI",
-                "confidence": confidence,
-                "is_verified": 0,
-                "remarks": str(item.get("notes") or "")[:500],
-            },
-        )
+        row = existing_rows.get(definition.name)
+        if not row:
+            row = doc.append("measurements", {"measurement_type": definition.name})
+            existing_rows[definition.name] = row
+        ai_notes = str(item.get("notes") or "")[:500]
+        has_staff_value = (row.measured_value or 0) > 0 and row.source in ("Manual", "Staff Edited")
+        if has_staff_value:
+            suggestion = _("AI suggested {0} {1} ({2}% confidence)").format(
+                value, doc.default_unit, confidence
+            )
+            row.remarks = "\n".join(filter(None, [row.remarks, suggestion]))[:500]
+        else:
+            row.measured_value = value
+            row.unit = doc.default_unit
+            row.source = "AI"
+            row.confidence = confidence
+            row.is_verified = 0
+            row.remarks = ai_notes
         accepted.append(
             {
                 "code": code,
                 "name": definition.measurement_name,
-                "value": value,
-                "unit": doc.default_unit,
-                "source": "AI",
-                "confidence": confidence,
-                "verified": False,
-                "remarks": str(item.get("notes") or "")[:500],
+                "value": row.measured_value,
+                "unit": row.unit or doc.default_unit,
+                "source": row.source,
+                "confidence": row.confidence or 0,
+                "verified": bool(row.is_verified),
+                "remarks": row.remarks or "",
             }
         )
         confidence_values.append(confidence)
@@ -231,7 +237,7 @@ def save_reviewed_measurements(session_name, measurements, status="Reviewed"):
             fields=["name", "measurement_code"],
         )
     }
-    doc.set("measurements", [])
+    existing_rows = {row.measurement_type: row for row in doc.measurements if row.measurement_type}
     seen = set()
     for item in rows:
         code = str(item.get("code") or "").upper()
@@ -239,18 +245,17 @@ def save_reviewed_measurements(session_name, measurements, status="Reviewed"):
         if code not in allowed or code in seen or value <= 0:
             frappe.throw(_("Invalid or duplicate measurement: {0}").format(code or "unknown"))
         seen.add(code)
-        doc.append(
-            "measurements",
-            {
-                "measurement_type": allowed[code],
-                "measured_value": value,
-                "unit": item.get("unit") if item.get("unit") in ("Inch", "CM") else doc.default_unit,
-                "source": "Staff Edited" if item.get("edited") else "AI",
-                "confidence": max(0, min(100, flt(item.get("confidence")))),
-                "is_verified": 1,
-                "remarks": str(item.get("remarks") or "")[:500],
-            },
-        )
+        measurement_type = allowed[code]
+        row = existing_rows.get(measurement_type)
+        if not row:
+            row = doc.append("measurements", {"measurement_type": measurement_type})
+            existing_rows[measurement_type] = row
+        row.measured_value = value
+        row.unit = item.get("unit") if item.get("unit") in ("Inch", "CM") else doc.default_unit
+        row.source = "Staff Edited" if item.get("edited") else "AI"
+        row.confidence = max(0, min(100, flt(item.get("confidence"))))
+        row.is_verified = 1
+        row.remarks = str(item.get("remarks") or "")[:500]
     doc.status = status
     doc.analysis_status = "Reviewed"
     doc.reviewed_by = frappe.session.user
