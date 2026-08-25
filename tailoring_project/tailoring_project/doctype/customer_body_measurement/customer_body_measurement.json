@@ -5,9 +5,10 @@
   "engine": "InnoDB",
   "field_order": [
     "naming_series", "customer", "customer_name", "measurement_date", "measured_by", "branch",
-    "measurement_settings_section", "default_unit", "measurement_version", "previous_measurement", "status",
-    "measurements_section", "measurements", "review_section", "remarks", "photo_session_id",
-    "ai_model_version", "overall_confidence"
+    "measurement_settings_section", "default_unit", "body_height", "body_weight", "consent_confirmed", "consent_by", "consent_on", "measurement_version", "previous_measurement", "status",
+    "photos_section", "front_photo", "side_photo", "back_photo", "capture_status", "analysis_status",
+    "measurements_section", "measurements", "review_section", "capture_quality", "quality_issues", "remarks", "photo_session_id",
+    "ai_model_version", "ai_response_id", "ai_request_id", "overall_confidence", "reviewed_by", "reviewed_on"
   ],
   "fields": [
     {"fieldname": "naming_series", "fieldtype": "Select", "label": "Naming Series", "options": "CBM-.YYYY.-.#####", "reqd": 1},
@@ -18,23 +19,42 @@
     {"fieldname": "branch", "fieldtype": "Link", "label": "Branch", "options": "Branch"},
     {"fieldname": "measurement_settings_section", "fieldtype": "Section Break", "label": "Measurement Settings"},
     {"default": "Inch", "fieldname": "default_unit", "fieldtype": "Select", "label": "Default Unit", "options": "Inch\nCM", "reqd": 1},
+    {"fieldname": "body_height", "fieldtype": "Float", "label": "Actual Height", "precision": "2", "reqd": 1},
+    {"fieldname": "body_weight", "fieldtype": "Float", "label": "Weight Kg (Optional)", "precision": "2"},
+    {"default": "0", "fieldname": "consent_confirmed", "fieldtype": "Check", "label": "Customer Photo Consent Confirmed", "reqd": 1},
+    {"fieldname": "consent_by", "fieldtype": "Link", "label": "Consent Recorded By", "options": "User", "read_only": 1},
+    {"fieldname": "consent_on", "fieldtype": "Datetime", "label": "Consent Recorded On", "read_only": 1},
     {"default": "1", "fieldname": "measurement_version", "fieldtype": "Int", "label": "Version", "reqd": 1},
     {"fieldname": "previous_measurement", "fieldtype": "Link", "label": "Previous Measurement", "options": "Customer Body Measurement"},
     {"default": "Draft", "fieldname": "status", "fieldtype": "Select", "in_list_view": 1, "label": "Status", "options": "Draft\nReviewed\nApproved", "reqd": 1},
+    {"fieldname": "photos_section", "fieldtype": "Section Break", "label": "Guided Photos"},
+    {"fieldname": "front_photo", "fieldtype": "Attach Image", "label": "Front Photo", "no_copy": 1},
+    {"fieldname": "side_photo", "fieldtype": "Attach Image", "label": "Side Photo", "no_copy": 1},
+    {"fieldname": "back_photo", "fieldtype": "Attach Image", "label": "Back Photo", "no_copy": 1},
+    {"default": "Pending Photos", "fieldname": "capture_status", "fieldtype": "Select", "label": "Capture Status", "options": "Pending Photos\nPhotos In Progress\nPhotos Complete", "read_only": 1},
+    {"default": "Not Started", "fieldname": "analysis_status", "fieldtype": "Select", "in_list_view": 1, "label": "Analysis Status", "options": "Not Started\nProcessing\nReady for Review\nNeeds New Photos\nReviewed\nFailed", "read_only": 1},
     {"fieldname": "measurements_section", "fieldtype": "Section Break", "label": "Measurements"},
     {"fieldname": "measurements", "fieldtype": "Table", "label": "Measurements", "options": "Body Measurement Item", "reqd": 1},
     {"fieldname": "review_section", "fieldtype": "Section Break", "label": "Review and Future AI Data"},
+    {"fieldname": "capture_quality", "fieldtype": "Select", "label": "Capture Quality", "options": "Pass\nReview\nFail", "read_only": 1},
+    {"fieldname": "quality_issues", "fieldtype": "Small Text", "label": "Quality Issues", "read_only": 1},
     {"fieldname": "remarks", "fieldtype": "Small Text", "label": "Remarks"},
     {"fieldname": "photo_session_id", "fieldtype": "Data", "label": "Photo Session ID", "no_copy": 1},
     {"fieldname": "ai_model_version", "fieldtype": "Data", "label": "AI Model Version", "no_copy": 1},
-    {"fieldname": "overall_confidence", "fieldtype": "Percent", "label": "Overall Confidence", "no_copy": 1}
+    {"fieldname": "ai_response_id", "fieldtype": "Data", "label": "OpenAI Response ID", "no_copy": 1, "read_only": 1},
+    {"fieldname": "ai_request_id", "fieldtype": "Data", "label": "OpenAI Request ID", "no_copy": 1, "read_only": 1},
+    {"fieldname": "overall_confidence", "fieldtype": "Percent", "label": "Overall Confidence", "no_copy": 1},
+    {"fieldname": "reviewed_by", "fieldtype": "Link", "label": "Reviewed By", "options": "User", "read_only": 1},
+    {"fieldname": "reviewed_on", "fieldtype": "Datetime", "label": "Reviewed On", "read_only": 1}
   ],
   "links": [],
   "module": "Tailoring Project",
   "name": "Customer Body Measurement",
   "naming_rule": "By \"Naming Series\" field",
   "permissions": [
-    {"create": 1, "delete": 1, "email": 1, "export": 1, "print": 1, "read": 1, "report": 1, "role": "System Manager", "share": 1, "write": 1}
+    {"create": 1, "delete": 1, "email": 1, "export": 1, "print": 1, "read": 1, "report": 1, "role": "System Manager", "share": 1, "write": 1},
+    {"create": 1, "email": 1, "print": 1, "read": 1, "report": 1, "role": "Sales User", "write": 1},
+    {"create": 1, "delete": 1, "email": 1, "export": 1, "print": 1, "read": 1, "report": 1, "role": "Sales Manager", "share": 1, "write": 1}
   ],
   "search_fields": "customer,customer_name",
   "sort_field": "measurement_date",

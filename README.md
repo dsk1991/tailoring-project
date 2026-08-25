@@ -52,3 +52,28 @@ python -m unittest discover -s tailoring_project/tests -v
 
 Live ERPNext installation and user-permission testing must still be completed
 on the target site.
+
+## Tailoring Staff Android app
+
+The native Android app is under `android/` and implements this staff flow:
+
+1. Connect using a staff ERPNext API key and secret.
+2. Search and select an ERPNext Customer.
+3. Enter actual height and optional weight.
+4. Capture guided front, side, and back full-body photos.
+5. Upload compressed photos as private ERPNext files.
+6. Ask the ERPNext backend to run OpenAI image analysis.
+7. Review/edit every measurement and save a Reviewed session.
+
+The Android app never receives or stores the OpenAI API key. Configure it in
+the single DocType **Tailoring AI Settings**, enable AI Measurement, and grant
+the staff user the standard **Sales User** role.
+
+Build on the configured Windows workspace with:
+
+```powershell
+.\build-tailoring-apk.ps1
+```
+
+For production use, configure an HTTPS ERPNext URL. AI output is an estimate
+and remains in review status until staff checks and saves every value.

@@ -1,0 +1,25 @@
+{
+  "actions": [],
+  "doctype": "DocType",
+  "engine": "InnoDB",
+  "field_order": [
+    "enabled", "openai_api_key", "model", "request_timeout_seconds", "privacy_section",
+    "store_openai_response", "measurement_prompt"
+  ],
+  "fields": [
+    {"default": "0", "fieldname": "enabled", "fieldtype": "Check", "label": "Enable AI Measurement"},
+    {"fieldname": "openai_api_key", "fieldtype": "Password", "label": "OpenAI API Key", "reqd": 1},
+    {"default": "gpt-5.4-mini", "fieldname": "model", "fieldtype": "Data", "label": "OpenAI Model", "reqd": 1},
+    {"default": "90", "fieldname": "request_timeout_seconds", "fieldtype": "Int", "label": "Request Timeout Seconds", "reqd": 1},
+    {"fieldname": "privacy_section", "fieldtype": "Section Break", "label": "Privacy and Prompt"},
+    {"default": "0", "description": "Keep disabled unless response retrieval from OpenAI is required.", "fieldname": "store_openai_response", "fieldtype": "Check", "label": "Store OpenAI Response"},
+    {"description": "Optional additional instructions. Core validation and JSON schema are always applied.", "fieldname": "measurement_prompt", "fieldtype": "Small Text", "label": "Additional Measurement Instructions"}
+  ],
+  "issingle": 1,
+  "links": [],
+  "module": "Tailoring Project",
+  "name": "Tailoring AI Settings",
+  "permissions": [
+    {"create": 1, "delete": 1, "read": 1, "role": "System Manager", "write": 1}
+  ]
+}

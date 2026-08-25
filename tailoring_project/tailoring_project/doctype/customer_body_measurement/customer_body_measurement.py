@@ -5,6 +5,10 @@ from frappe.model.document import Document
 
 class CustomerBodyMeasurement(Document):
     def validate(self):
+        if (self.body_height or 0) <= 0:
+            frappe.throw(_("Actual Height must be greater than zero"))
+        if not self.consent_confirmed:
+            frappe.throw(_("Customer photo consent must be confirmed"))
         self._validate_version()
         self._validate_previous_measurement()
         self._validate_measurements()

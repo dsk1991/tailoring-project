@@ -9,3 +9,5 @@ app_email = "dileepsinghkheechee@gmail.com"
 app_license = "MIT"
 
 required_apps = ["erpnext"]
+
+after_install = "tailoring_project.install.after_install"

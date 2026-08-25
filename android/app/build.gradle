@@ -1,0 +1,25 @@
+plugins { id 'com.android.application' }
+
+android {
+    namespace 'com.modernmarwar.tailoringstaff'
+    compileSdk 35
+
+    defaultConfig {
+        applicationId 'com.modernmarwar.tailoringstaff'
+        minSdk 23
+        targetSdk 35
+        versionCode 1
+        versionName '1.0.0'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+        }
+    }
+}
+
+dependencies {
+    implementation 'androidx.annotation:annotation:1.10.0'
+    implementation 'androidx.exifinterface:exifinterface:1.4.2'
+}

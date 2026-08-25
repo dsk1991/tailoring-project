@@ -1,4 +1,5 @@
 import json
+import re
 import sys
 import unittest
 from pathlib import Path
@@ -33,13 +34,14 @@ class TestDocTypeSchemas(unittest.TestCase):
     def field_map(self, schema):
         return {field["fieldname"]: field for field in schema["fields"]}
 
-    def test_all_five_doctypes_are_valid_json(self):
+    def test_all_six_doctypes_are_valid_json(self):
         expected = {
             "Customer Body Measurement": "customer_body_measurement/customer_body_measurement.json",
             "Body Measurement Item": "body_measurement_item/body_measurement_item.json",
             "Measurement Definition": "measurement_definition/measurement_definition.json",
             "Garment Measurement Template": "garment_measurement_template/garment_measurement_template.json",
             "Garment Measurement Formula": "garment_measurement_formula/garment_measurement_formula.json",
+            "Tailoring AI Settings": "tailoring_ai_settings/tailoring_ai_settings.json",
         }
         for doctype_name, relative_path in expected.items():
             with self.subTest(doctype=doctype_name):
@@ -70,6 +72,18 @@ class TestDocTypeSchemas(unittest.TestCase):
             self.field_map(formula_child)["output_measurement"]["options"], "Measurement Definition"
         )
 
+    def test_photo_ai_and_consent_fields_are_present(self):
+        session = self.load("customer_body_measurement", "customer_body_measurement.json")
+        fields = self.field_map(session)
+        for fieldname in (
+            "body_height", "consent_confirmed", "front_photo", "side_photo", "back_photo",
+            "capture_status", "analysis_status", "capture_quality", "quality_issues",
+        ):
+            self.assertIn(fieldname, fields)
+        settings = self.load("tailoring_ai_settings", "tailoring_ai_settings.json")
+        self.assertEqual(self.field_map(settings)["openai_api_key"]["fieldtype"], "Password")
+        self.assertEqual(settings["issingle"], 1)
+
 
 class TestFormulaEngine(unittest.TestCase):
     def test_evaluates_koti_shoulder_formula(self):
@@ -91,6 +105,26 @@ class TestFormulaEngine(unittest.TestCase):
     def test_reports_missing_measurement(self):
         with self.assertRaisesRegex(FormulaError, "SHOULDER_WIDTH is missing"):
             evaluate_formula("SHOULDER_WIDTH - 0.5", {})
+
+
+class TestAndroidSecurityContract(unittest.TestCase):
+    def test_android_does_not_call_openai_or_embed_openai_key(self):
+        android_root = ROOT / "android" / "app" / "src" / "main"
+        source = "\n".join(
+            path.read_text(encoding="utf-8")
+            for path in android_root.rglob("*")
+            if path.is_file() and path.suffix in {".java", ".xml"}
+        )
+        self.assertNotIn("api.openai.com", source)
+        self.assertIsNone(re.search(r"sk-[A-Za-z0-9_-]{20,}", source))
+        self.assertIn("tailoring_project.api.", source)
+        self.assertIn("analyze_measurements", source)
+
+    def test_server_api_is_authenticated_and_openai_key_is_not_returned(self):
+        api_source = (ROOT / "tailoring_project" / "api.py").read_text(encoding="utf-8")
+        self.assertNotIn("allow_guest=True", api_source)
+        self.assertIn("frappe.session.user == \"Guest\"", api_source)
+        self.assertNotIn('"openai_api_key"', api_source)
 
 
 if __name__ == "__main__":
