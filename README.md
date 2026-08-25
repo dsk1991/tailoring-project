@@ -37,6 +37,9 @@ bench --site your-site.local install-app tailoring_project
 bench --site your-site.local migrate
 ```
 
+Use the repository URL as the only positional argument to `bench get-app`.
+Do not prefix the command with a folder name such as `tests`.
+
 ERPNext v16 is required because Customer, Branch, and related links are used.
 
 ## Development validation
@@ -44,7 +47,7 @@ ERPNext v16 is required because Customer, Branch, and related links are used.
 The repository includes dependency-free schema and formula tests:
 
 ```bash
-python -m unittest discover -s tests -v
+python -m unittest discover -s tailoring_project/tests -v
 ```
 
 Live ERPNext installation and user-permission testing must still be completed

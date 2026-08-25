@@ -4,7 +4,7 @@ import unittest
 from pathlib import Path
 
 
-ROOT = Path(__file__).resolve().parents[1]
+ROOT = Path(__file__).resolve().parents[2]
 sys.path.insert(0, str(ROOT))
 
 from tailoring_project.tailoring_project.formula_engine import (  # noqa: E402
@@ -14,7 +14,15 @@ from tailoring_project.tailoring_project.formula_engine import (  # noqa: E402
 )
 
 
-DOCTYPE_ROOT = ROOT / "tailoring_project" / "tailoring_project" / "doctype"
+APP_ROOT = ROOT / "tailoring_project"
+DOCTYPE_ROOT = APP_ROOT / "tailoring_project" / "doctype"
+
+
+class TestFrappeAppStructure(unittest.TestCase):
+    def test_required_frappe_app_files_exist(self):
+        for filename in ("hooks.py", "modules.txt", "patches.txt"):
+            with self.subTest(filename=filename):
+                self.assertTrue((APP_ROOT / filename).is_file())
 
 
 class TestDocTypeSchemas(unittest.TestCase):

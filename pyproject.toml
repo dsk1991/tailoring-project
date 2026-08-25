@@ -6,12 +6,22 @@ build-backend = "flit_core.buildapi"
 name = "tailoring_project"
 authors = [{name = "Dileep Singh Kheechee", email = "dileepsinghkheechee@gmail.com"}]
 description = "ERPNext customer body measurement and garment formula management"
-requires-python = ">=3.10"
+readme = "README.md"
+requires-python = ">=3.14"
 dynamic = ["version"]
 dependencies = []
 
+[project.urls]
+Homepage = "https://github.com/dsk1991/tailoring-project"
+Repository = "https://github.com/dsk1991/tailoring-project.git"
+"Bug Reports" = "https://github.com/dsk1991/tailoring-project/issues"
+
 [tool.flit.module]
 name = "tailoring_project"
+
+[tool.bench.frappe-dependencies]
+frappe = ">=16.0.0-dev,<17.0.0"
+erpnext = ">=16.0.0-dev,<17.0.0"
 
 [tool.black]
 line-length = 110

@@ -1,3 +1,6 @@
+from . import __version__ as app_version
+
+
 app_name = "tailoring_project"
 app_title = "Tailoring Project"
 app_publisher = "Dileep Singh Kheechee"
