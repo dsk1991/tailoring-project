@@ -1,0 +1,33 @@
+{
+  "actions": [],
+  "allow_rename": 1,
+  "autoname": "format:{garment_type}-{fit_type}-V{template_version}",
+  "doctype": "DocType",
+  "engine": "InnoDB",
+  "field_order": [
+    "template_name", "garment_type", "fit_type", "gender", "template_version", "default_unit",
+    "effective_from", "is_active", "formula_section", "formula_items", "description"
+  ],
+  "fields": [
+    {"fieldname": "template_name", "fieldtype": "Data", "in_list_view": 1, "label": "Template Name", "reqd": 1},
+    {"fieldname": "garment_type", "fieldtype": "Select", "in_list_view": 1, "label": "Garment Type", "options": "Shirt\nPant\nCoat\nKoti\nKurta", "reqd": 1},
+    {"default": "Regular", "fieldname": "fit_type", "fieldtype": "Select", "in_list_view": 1, "label": "Fit Type", "options": "Slim\nRegular\nLoose", "reqd": 1},
+    {"default": "Unisex", "fieldname": "gender", "fieldtype": "Select", "label": "Gender", "options": "Male\nFemale\nUnisex", "reqd": 1},
+    {"default": "1", "fieldname": "template_version", "fieldtype": "Int", "label": "Version", "reqd": 1},
+    {"default": "Inch", "fieldname": "default_unit", "fieldtype": "Select", "label": "Default Unit", "options": "Inch\nCM", "reqd": 1},
+    {"default": "Today", "fieldname": "effective_from", "fieldtype": "Date", "label": "Effective From", "reqd": 1},
+    {"default": "1", "fieldname": "is_active", "fieldtype": "Check", "in_list_view": 1, "label": "Active"},
+    {"fieldname": "formula_section", "fieldtype": "Section Break", "label": "Garment Measurement Formulas"},
+    {"fieldname": "formula_items", "fieldtype": "Table", "label": "Formula Items", "options": "Garment Measurement Formula", "reqd": 1},
+    {"fieldname": "description", "fieldtype": "Small Text", "label": "Description"}
+  ],
+  "links": [],
+  "module": "Tailoring Project",
+  "name": "Garment Measurement Template",
+  "permissions": [
+    {"create": 1, "delete": 1, "email": 1, "export": 1, "print": 1, "read": 1, "report": 1, "role": "System Manager", "share": 1, "write": 1}
+  ],
+  "sort_field": "modified",
+  "sort_order": "DESC",
+  "track_changes": 1
+}

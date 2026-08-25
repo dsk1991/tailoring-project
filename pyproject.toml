@@ -1,0 +1,21 @@
+[build-system]
+requires = ["flit_core>=3.4,<4"]
+build-backend = "flit_core.buildapi"
+
+[project]
+name = "tailoring_project"
+authors = [{name = "Dileep Singh Kheechee", email = "dileepsinghkheechee@gmail.com"}]
+description = "ERPNext customer body measurement and garment formula management"
+requires-python = ">=3.10"
+dynamic = ["version"]
+dependencies = []
+
+[tool.flit.module]
+name = "tailoring_project"
+
+[tool.black]
+line-length = 110
+
+[tool.ruff]
+line-length = 110
+target-version = "py310"

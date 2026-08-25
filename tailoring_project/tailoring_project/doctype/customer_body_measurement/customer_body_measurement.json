@@ -1,0 +1,43 @@
+{
+  "actions": [],
+  "allow_rename": 1,
+  "doctype": "DocType",
+  "engine": "InnoDB",
+  "field_order": [
+    "naming_series", "customer", "customer_name", "measurement_date", "measured_by", "branch",
+    "measurement_settings_section", "default_unit", "measurement_version", "previous_measurement", "status",
+    "measurements_section", "measurements", "review_section", "remarks", "photo_session_id",
+    "ai_model_version", "overall_confidence"
+  ],
+  "fields": [
+    {"fieldname": "naming_series", "fieldtype": "Select", "label": "Naming Series", "options": "CBM-.YYYY.-.#####", "reqd": 1},
+    {"fieldname": "customer", "fieldtype": "Link", "in_list_view": 1, "label": "Customer", "options": "Customer", "reqd": 1},
+    {"fetch_from": "customer.customer_name", "fieldname": "customer_name", "fieldtype": "Data", "label": "Customer Name", "read_only": 1},
+    {"default": "Now", "fieldname": "measurement_date", "fieldtype": "Datetime", "in_list_view": 1, "label": "Measurement Date", "reqd": 1},
+    {"default": "__user", "fieldname": "measured_by", "fieldtype": "Link", "label": "Measured By", "options": "User", "reqd": 1},
+    {"fieldname": "branch", "fieldtype": "Link", "label": "Branch", "options": "Branch"},
+    {"fieldname": "measurement_settings_section", "fieldtype": "Section Break", "label": "Measurement Settings"},
+    {"default": "Inch", "fieldname": "default_unit", "fieldtype": "Select", "label": "Default Unit", "options": "Inch\nCM", "reqd": 1},
+    {"default": "1", "fieldname": "measurement_version", "fieldtype": "Int", "label": "Version", "reqd": 1},
+    {"fieldname": "previous_measurement", "fieldtype": "Link", "label": "Previous Measurement", "options": "Customer Body Measurement"},
+    {"default": "Draft", "fieldname": "status", "fieldtype": "Select", "in_list_view": 1, "label": "Status", "options": "Draft\nReviewed\nApproved", "reqd": 1},
+    {"fieldname": "measurements_section", "fieldtype": "Section Break", "label": "Measurements"},
+    {"fieldname": "measurements", "fieldtype": "Table", "label": "Measurements", "options": "Body Measurement Item", "reqd": 1},
+    {"fieldname": "review_section", "fieldtype": "Section Break", "label": "Review and Future AI Data"},
+    {"fieldname": "remarks", "fieldtype": "Small Text", "label": "Remarks"},
+    {"fieldname": "photo_session_id", "fieldtype": "Data", "label": "Photo Session ID", "no_copy": 1},
+    {"fieldname": "ai_model_version", "fieldtype": "Data", "label": "AI Model Version", "no_copy": 1},
+    {"fieldname": "overall_confidence", "fieldtype": "Percent", "label": "Overall Confidence", "no_copy": 1}
+  ],
+  "links": [],
+  "module": "Tailoring Project",
+  "name": "Customer Body Measurement",
+  "naming_rule": "By \"Naming Series\" field",
+  "permissions": [
+    {"create": 1, "delete": 1, "email": 1, "export": 1, "print": 1, "read": 1, "report": 1, "role": "System Manager", "share": 1, "write": 1}
+  ],
+  "search_fields": "customer,customer_name",
+  "sort_field": "measurement_date",
+  "sort_order": "DESC",
+  "track_changes": 1
+}

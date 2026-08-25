@@ -1,0 +1,22 @@
+{
+  "doctype": "DocType",
+  "editable_grid": 1,
+  "engine": "InnoDB",
+  "field_order": [
+    "output_measurement", "formula", "rounding_rule", "minimum_value", "maximum_value",
+    "allow_manual_edit", "display_order", "instructions"
+  ],
+  "fields": [
+    {"fieldname": "output_measurement", "fieldtype": "Link", "in_list_view": 1, "label": "Output Measurement", "options": "Measurement Definition", "reqd": 1},
+    {"fieldname": "formula", "fieldtype": "Data", "in_list_view": 1, "label": "Formula", "reqd": 1},
+    {"default": "Nearest 0.25", "fieldname": "rounding_rule", "fieldtype": "Select", "label": "Rounding Rule", "options": "None\nNearest 0.10\nNearest 0.25\nNearest 0.50"},
+    {"fieldname": "minimum_value", "fieldtype": "Float", "label": "Minimum Value", "precision": "2"},
+    {"fieldname": "maximum_value", "fieldtype": "Float", "label": "Maximum Value", "precision": "2"},
+    {"default": "1", "fieldname": "allow_manual_edit", "fieldtype": "Check", "label": "Allow Manual Edit"},
+    {"default": "0", "fieldname": "display_order", "fieldtype": "Int", "label": "Display Order"},
+    {"fieldname": "instructions", "fieldtype": "Small Text", "label": "Instructions"}
+  ],
+  "istable": 1,
+  "module": "Tailoring Project",
+  "name": "Garment Measurement Formula"
+}

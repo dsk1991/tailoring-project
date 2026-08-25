@@ -1,0 +1,2 @@
+recursive-include tailoring_project *.css *.csv *.html *.ico *.js *.json *.md *.png *.py *.svg *.txt
+recursive-exclude tailoring_project *.pyc

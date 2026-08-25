@@ -1,0 +1,37 @@
+{
+  "actions": [],
+  "allow_rename": 1,
+  "autoname": "field:measurement_code",
+  "doctype": "DocType",
+  "engine": "InnoDB",
+  "field_order": [
+    "measurement_code", "measurement_name", "measurement_scope", "body_section", "measurement_kind",
+    "value_basis", "default_unit", "validation_section", "minimum_value", "maximum_value",
+    "display_order", "instructions", "diagram", "is_active"
+  ],
+  "fields": [
+    {"fieldname": "measurement_code", "fieldtype": "Data", "in_list_view": 1, "label": "Measurement Code", "reqd": 1, "unique": 1},
+    {"fieldname": "measurement_name", "fieldtype": "Data", "in_list_view": 1, "label": "Measurement Name", "reqd": 1},
+    {"default": "Body", "fieldname": "measurement_scope", "fieldtype": "Select", "in_list_view": 1, "label": "Measurement Scope", "options": "Body\nGarment", "reqd": 1},
+    {"fieldname": "body_section", "fieldtype": "Select", "label": "Body Section", "options": "General\nNeck\nShoulder\nUpper Body\nTorso\nArm\nLower Body\nLeg", "reqd": 1},
+    {"fieldname": "measurement_kind", "fieldtype": "Select", "label": "Measurement Kind", "options": "Length\nWidth\nCircumference", "reqd": 1},
+    {"fieldname": "value_basis", "fieldtype": "Select", "label": "Value Basis", "options": "Straight Length\nFull Circumference\nHalf Width", "reqd": 1},
+    {"default": "Inch", "fieldname": "default_unit", "fieldtype": "Select", "label": "Default Unit", "options": "Inch\nCM", "reqd": 1},
+    {"fieldname": "validation_section", "fieldtype": "Section Break", "label": "Validation and Display"},
+    {"fieldname": "minimum_value", "fieldtype": "Float", "label": "Minimum Value", "precision": "2"},
+    {"fieldname": "maximum_value", "fieldtype": "Float", "label": "Maximum Value", "precision": "2"},
+    {"default": "0", "fieldname": "display_order", "fieldtype": "Int", "label": "Display Order"},
+    {"fieldname": "instructions", "fieldtype": "Small Text", "label": "Instructions"},
+    {"fieldname": "diagram", "fieldtype": "Attach Image", "label": "Diagram"},
+    {"default": "1", "fieldname": "is_active", "fieldtype": "Check", "in_list_view": 1, "label": "Active"}
+  ],
+  "links": [],
+  "module": "Tailoring Project",
+  "name": "Measurement Definition",
+  "permissions": [
+    {"create": 1, "delete": 1, "email": 1, "export": 1, "print": 1, "read": 1, "report": 1, "role": "System Manager", "share": 1, "write": 1}
+  ],
+  "sort_field": "display_order",
+  "sort_order": "ASC",
+  "track_changes": 1
+}
