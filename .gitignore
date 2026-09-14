@@ -12,4 +12,6 @@ logs/
 Thumbs.db
 android/.gradle/
 android/app/build/
+android/direct-build/
 Tailoring-Staff-*.apk
+*.apk.idsig

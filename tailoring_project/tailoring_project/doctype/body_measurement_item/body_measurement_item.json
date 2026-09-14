@@ -10,7 +10,7 @@
     {"fieldname": "measurement_type", "fieldtype": "Link", "in_list_view": 1, "label": "Measurement Type", "options": "Measurement Definition", "reqd": 1},
     {"fetch_from": "measurement_type.measurement_name", "fieldname": "measurement_name", "fieldtype": "Data", "label": "Measurement Name", "read_only": 1},
     {"fetch_from": "measurement_type.body_section", "fieldname": "body_section", "fieldtype": "Data", "label": "Body Section", "read_only": 1},
-    {"fieldname": "measured_value", "fieldtype": "Float", "in_list_view": 1, "label": "Measured Value", "precision": "2", "reqd": 1},
+    {"description": "Draft measurements may remain blank until staff or AI enters a value.", "fieldname": "measured_value", "fieldtype": "Float", "in_list_view": 1, "label": "Measured Value", "precision": "2"},
     {"default": "Inch", "fieldname": "unit", "fieldtype": "Select", "in_list_view": 1, "label": "Unit", "options": "Inch\nCM", "reqd": 1},
     {"default": "Manual", "fieldname": "source", "fieldtype": "Select", "label": "Source", "options": "Manual\nAI\nStaff Edited", "reqd": 1},
     {"fieldname": "confidence", "fieldtype": "Percent", "label": "Confidence"},

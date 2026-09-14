@@ -1,0 +1,26 @@
+{
+  "doctype": "DocType",
+  "editable_grid": 1,
+  "engine": "InnoDB",
+  "field_order": [
+    "measurement_type", "measurement_name", "body_section", "body_value", "formula",
+    "calculated_value", "final_value", "unit", "source", "update_body_measurement", "is_verified", "remarks"
+  ],
+  "fields": [
+    {"fieldname": "measurement_type", "fieldtype": "Link", "in_list_view": 1, "label": "Measurement Type", "options": "Measurement Definition", "reqd": 1},
+    {"fetch_from": "measurement_type.measurement_name", "fieldname": "measurement_name", "fieldtype": "Data", "label": "Measurement Name", "read_only": 1},
+    {"fetch_from": "measurement_type.body_section", "fieldname": "body_section", "fieldtype": "Data", "label": "Body Section", "read_only": 1},
+    {"fieldname": "body_value", "fieldtype": "Float", "label": "Body Value", "precision": "2", "read_only": 1},
+    {"fieldname": "formula", "fieldtype": "Data", "label": "Formula", "read_only": 1},
+    {"fieldname": "calculated_value", "fieldtype": "Float", "label": "Calculated Value", "precision": "2", "read_only": 1},
+    {"fieldname": "final_value", "fieldtype": "Float", "in_list_view": 1, "label": "Final Garment Value", "precision": "2", "reqd": 1},
+    {"default": "Inch", "fieldname": "unit", "fieldtype": "Select", "in_list_view": 1, "label": "Unit", "options": "Inch\nCM", "reqd": 1},
+    {"fieldname": "source", "fieldtype": "Select", "label": "Source", "options": "New Manual\nFrom Body\nFormula\nStaff Edited", "reqd": 1},
+    {"default": "0", "fieldname": "update_body_measurement", "fieldtype": "Check", "label": "Updates Body Measurement", "read_only": 1},
+    {"default": "1", "fieldname": "is_verified", "fieldtype": "Check", "label": "Verified"},
+    {"fieldname": "remarks", "fieldtype": "Small Text", "label": "Remarks"}
+  ],
+  "istable": 1,
+  "module": "Tailoring Project",
+  "name": "Customer Template Measurement Item"
+}

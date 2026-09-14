@@ -1,0 +1,41 @@
+{
+  "actions": [],
+  "autoname": "naming_series:",
+  "doctype": "DocType",
+  "engine": "InnoDB",
+  "field_order": [
+    "naming_series", "customer", "customer_name", "measurement_date", "measured_by", "branch",
+    "template_section", "measurement_template", "garment_type", "fit_type", "template_version",
+    "body_measurement", "default_unit", "status", "measurements_section", "measurements", "remarks"
+  ],
+  "fields": [
+    {"default": "CMT-.YYYY.-.#####", "fieldname": "naming_series", "fieldtype": "Select", "hidden": 1, "label": "Naming Series", "options": "CMT-.YYYY.-.#####", "reqd": 1},
+    {"fieldname": "customer", "fieldtype": "Link", "in_list_view": 1, "label": "Customer", "options": "Customer", "reqd": 1},
+    {"fetch_from": "customer.customer_name", "fieldname": "customer_name", "fieldtype": "Data", "label": "Customer Name", "read_only": 1},
+    {"default": "Now", "fieldname": "measurement_date", "fieldtype": "Datetime", "in_list_view": 1, "label": "Measurement Date", "reqd": 1},
+    {"default": "__user", "fieldname": "measured_by", "fieldtype": "Link", "label": "Measured By", "options": "User", "reqd": 1},
+    {"fieldname": "branch", "fieldtype": "Link", "label": "Branch", "options": "Branch"},
+    {"fieldname": "template_section", "fieldtype": "Section Break", "label": "Garment Template Snapshot"},
+    {"fieldname": "measurement_template", "fieldtype": "Link", "in_list_view": 1, "label": "Measurement Template", "options": "Garment Measurement Template", "reqd": 1},
+    {"fieldname": "garment_type", "fieldtype": "Data", "in_list_view": 1, "label": "Garment Type", "read_only": 1},
+    {"fieldname": "fit_type", "fieldtype": "Data", "label": "Fit Type", "read_only": 1},
+    {"fieldname": "template_version", "fieldtype": "Int", "label": "Template Version", "read_only": 1},
+    {"fieldname": "body_measurement", "fieldtype": "Link", "label": "Body Measurement Version", "options": "Customer Body Measurement", "read_only": 1},
+    {"default": "Inch", "fieldname": "default_unit", "fieldtype": "Select", "label": "Default Unit", "options": "Inch\nCM", "reqd": 1},
+    {"default": "Reviewed", "fieldname": "status", "fieldtype": "Select", "in_list_view": 1, "label": "Status", "options": "Draft\nReviewed\nApproved", "reqd": 1},
+    {"fieldname": "measurements_section", "fieldtype": "Section Break", "label": "Body Inputs and Garment Outputs"},
+    {"fieldname": "measurements", "fieldtype": "Table", "label": "Measurements", "options": "Customer Template Measurement Item", "reqd": 1},
+    {"fieldname": "remarks", "fieldtype": "Small Text", "label": "Remarks"}
+  ],
+  "links": [],
+  "module": "Tailoring Project",
+  "name": "Customer Measurement by Template",
+  "permissions": [
+    {"create": 1, "delete": 1, "email": 1, "export": 1, "print": 1, "read": 1, "report": 1, "role": "System Manager", "share": 1, "write": 1},
+    {"create": 1, "read": 1, "report": 1, "role": "Sales User", "write": 1},
+    {"create": 1, "read": 1, "report": 1, "role": "Sales Manager", "write": 1}
+  ],
+  "sort_field": "measurement_date",
+  "sort_order": "DESC",
+  "track_changes": 1
+}
