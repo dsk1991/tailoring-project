@@ -8,9 +8,9 @@ class CustomerBodyMeasurement(Document):
         self._add_missing_measurement_rows()
 
     def validate(self):
-        if (self.body_height or 0) <= 0:
+        if self.measurement_mode == "AI Photo" and (self.body_height or 0) <= 0:
             frappe.throw(_("Actual Height must be greater than zero"))
-        if not self.consent_confirmed:
+        if self.measurement_mode == "AI Photo" and not self.consent_confirmed:
             frappe.throw(_("Customer photo consent must be confirmed"))
         self._validate_version()
         self._validate_previous_measurement()

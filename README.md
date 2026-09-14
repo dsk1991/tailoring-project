@@ -10,6 +10,9 @@ defining garment measurement templates with safe formulas.
 3. **Measurement Definition** - reusable body/garment measurement master.
 4. **Garment Measurement Template** - garment, fit, version, and validity header.
 5. **Garment Measurement Formula** - child rows defining output formulas.
+6. **Customer Measurement by Template** - one Shirt/Pant/Coat/Koti/Kurta measurement snapshot.
+7. **Customer Template Measurement Item** - actual body inputs plus calculated garment outputs.
+8. **Tailoring AI Settings** - server-side AI configuration retained for optional future use.
 
 Measurements are stored as rows instead of adding a separate field to the
 Customer DocType for every possible measurement.
@@ -53,21 +56,21 @@ python -m unittest discover -s tailoring_project/tests -v
 Live ERPNext installation and user-permission testing must still be completed
 on the target site.
 
-## Tailoring Staff Android app
+## Tailoring Staff Android app (manual measurement)
 
 The native Android app is under `android/` and implements this staff flow:
 
 1. Connect using a staff ERPNext API key and secret.
 2. Search and select an ERPNext Customer.
-3. Enter actual height and optional weight.
-4. Capture guided front, side, and back full-body photos.
-5. Upload compressed photos as private ERPNext files.
-6. Ask the ERPNext backend to run OpenAI image analysis.
-7. Review/edit every measurement and save a Reviewed session.
+3. Select an active garment/fit Measurement Template.
+4. Load only the body values required by that template; the latest saved values are prefilled.
+5. Take or correct each value step-by-step using the tape guide diagram.
+6. Review and save. ERPNext creates both a template snapshot and a new consolidated Customer Body Measurement version.
+7. Safe template formulas calculate garment outputs; calculated values never overwrite actual body values.
 
-The Android app never receives or stores the OpenAI API key. Configure it in
-the single DocType **Tailoring AI Settings**, enable AI Measurement, and grant
-the staff user the standard **Sales User** role.
+The Android app has no camera permission, photo upload, OpenAI endpoint, or AI
+measurement action. Grant the staff user the standard **Sales User** role and
+an ERPNext API key/secret.
 
 Build on the configured Windows workspace with:
 
@@ -75,5 +78,5 @@ Build on the configured Windows workspace with:
 .\build-tailoring-apk.ps1
 ```
 
-For production use, configure an HTTPS ERPNext URL. AI output is an estimate
-and remains in review status until staff checks and saves every value.
+For production use, configure an HTTPS ERPNext URL. Measurements are entered
+manually by trained staff and remain in review status until final save.
